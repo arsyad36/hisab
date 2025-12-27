@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hisab Jumali</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    font-family:'Amiri',serif;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:radial-gradient(circle at top,#1f2933,#0b0f14 70%);
+    margin:0;
+    padding:16px;
+    color:#fff;
+}
+
+/* Container utama */
+.container{
+    width:100%;
+    max-width:420px;
+    padding:28px 26px;
+    text-align:center;
+    border-radius:20px;
+    background:rgba(30,30,30,.75);
+    backdrop-filter:blur(12px);
+    box-shadow:0 20px 40px rgba(0,0,0,.45);
+}
+
+/* Judul */
+h2{
+    margin:0 0 22px;
+    font-size:28px;
+    color:#00e676;
+}
+
+/* Input */
+input{
+    width:100%;
+    padding:15px;
+    font-size:22px;
+    border-radius:14px;
+    border:none;
+    outline:none;
+    background:#2a2a2a;
+    color:#fff;
+    direction:rtl;
+    text-align:right;
+}
+
+input::placeholder{color:#aaa}
+
+/* Tombol */
+button{
+    margin-top:18px;
+    width:100%;
+    padding:14px;
+    font-size:18px;
+    font-weight:bold;
+    border:none;
+    border-radius:14px;
+    cursor:pointer;
+    background:linear-gradient(135deg,#00e676,#00c853);
+    color:#000;
+    transition:.25s ease;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 0 18px rgba(0,230,118,.6);
+}
+
+/* Result */
+.result{
+    margin-top:22px;
+    font-size:22px;
+    font-weight:bold;
+    color:#00e676;
+}
+
+/* Grid hasil */
+.explanation{
+    margin-top:18px;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:10px;
+    direction:rtl;
+}
+
+/* Cell animasi */
+.cell{
+    background:#1f1f1f;
+    border-radius:12px;
+    padding:10px 6px;
+    text-align:center;
+    opacity:0;
+    transform:translateY(10px) scale(.95);
+    animation:cellIn .45s ease forwards;
+    box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.05);
+}
+
+.cell span{
+    display:block;
+    font-size:20px;
+    color:#00e676;
+}
+
+.cell small{
+    font-size:14px;
+    color:#ccc;
+}
+
+@keyframes cellIn{
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+        box-shadow:
+            inset 0 0 0 1px rgba(255,255,255,.05),
+            0 0 12px rgba(0,230,118,.35);
+    }
+}
+
+/* ===== SOCIAL LINK ===== */
+.social-container{
+    margin-top:22px;
+    text-align:center;
+}
+
+.social-container p{
+    font-size:14px;
+    color:#bbb;
+    margin-bottom:10px;
+}
+
+.social-icon{
+    width:52px;
+    height:52px;
+    padding:6px;
+    margin:0 12px;
+    border-radius:14px;
+    background:rgba(255,255,255,0.03);
+    object-fit:contain;
+    opacity:.85;
+    transition:
+        transform .35s ease,
+        opacity .35s ease,
+        box-shadow .35s ease,
+        filter .35s ease;
+}
+
+.social-icon:hover{
+    transform:scale(1.18) translateY(-4px);
+    opacity:1;
+    filter:brightness(1.15);
+}
+
+.social-icon.ig:hover{
+    box-shadow:
+        0 0 12px rgba(225,48,108,.8),
+        0 0 25px rgba(253,29,29,.6);
+}
+
+.social-icon.wa:hover{
+    box-shadow:
+        0 0 12px rgba(37,211,102,.8),
+        0 0 25px rgba(37,211,102,.6);
+}
+
+/* Watermark terkunci */
+.copyright{
+    position:fixed;
+    bottom:8px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:11px;
+    letter-spacing:.6px;
+    color:rgba(255,255,255,.35);
+    pointer-events:none;
+    user-select:none;
+    z-index:999;
+}
+
+/* Responsive */
+@media(max-width:360px){
+    .explanation{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Hisab Jumali</h2>
+
+    <input id="inputText" type="text" placeholder="Ketik disini">
+
+    <button onclick="calculate()">Hitung</button>
+
+    <div class="result" id="result"></div>
+    <div class="explanation" id="explanation"></div>
+
+    <!-- SOCIAL LINK -->
+    <div class="social-container">
+        <p>Info lebih lanjut:</p>
+
+        <a href="https://www.instagram.com/umarhamdan_a/" target="_blank" rel="noopener noreferrer">
+            <img src="https://res.cloudinary.com/dmecuyazc/image/upload/v1766738130/ig_nhlx8u.png"
+                 alt="Instagram AFHIMNA"
+                 class="social-icon ig">
+        </a>
+
+        <a href="https://wa.me/62859106771139" target="_blank" rel="noopener noreferrer">
+            <img src="https://res.cloudinary.com/dmecuyazc/image/upload/v1766738128/wa_qpuube.png"
+                 alt="WhatsApp AFHIMNA"
+                 class="social-icon wa">
+        </a>
+    </div>
+</div>
+
+<!-- WATERMARK -->
+<p class="copyright">
+© 2025 Afhimna Dev. All Rights Reserved.
+</p>
+
+<script>
+const abjadValues={
+ 'أ':1,'ا':1,'ء':1,'إ':1,'ؤ':1,'ئ':1,'ى':1,
+ 'ب':2,'ج':3,'د':4,'ه':5,'و':6,'ز':7,'ح':8,'ط':9,'ي':10,
+ 'ك':20,'ل':30,'م':40,'ن':50,'س':60,'ع':70,'ف':80,'ص':90,'ق':100,
+ 'ر':200,'ش':300,'ت':400,'ة':400,'ث':500,'خ':600,'ذ':700,
+ 'ض':800,'ظ':900,'غ':1000
+};
+
+function normalizeArabic(text){
+    return text.replace(/[\u064B-\u065F]/g,'');
+}
+
+function animateNumber(el,target){
+    let n=0;
+    const step=Math.max(1,target/40);
+    const timer=setInterval(()=>{
+        n+=step;
+        if(n>=target){
+            n=target;
+            clearInterval(timer);
+        }
+        el.textContent=`النتيجة: ${Math.floor(n)}`;
+    },16);
+}
+
+function calculate(){
+    let input=normalizeArabic(inputText.value.trim());
+    let sum=0;
+    explanation.innerHTML="";
+
+    [...input].forEach((c,i)=>{
+        if(abjadValues[c]){
+            sum+=abjadValues[c];
+            const cell=document.createElement("div");
+            cell.className="cell";
+            cell.style.animationDelay=`${i*60}ms`;
+            cell.innerHTML=`<span>${c}</span><small>${abjadValues[c]}</small>`;
+            explanation.appendChild(cell);
+        }
+    });
+
+    sum>0
+        ? animateNumber(result,sum)
+        : result.textContent="❌ tidak ada hasil";
+}
+
+inputText.addEventListener("keydown",e=>{
+    if(e.key==="Enter") calculate();
+});
+</script>
+
+</body>
+</html>
