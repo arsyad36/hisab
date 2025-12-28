@@ -123,13 +123,11 @@ button:hover{
     }
 }
 
-/* ===== SOCIAL LINK (LAYOUT ASLI, TITIK BIRU HILANG) ===== */
+/* ===== SOCIAL LINK (TIDAK DIUBAH) ===== */
 .social-container{
     margin-top:22px;
     text-align:center;
-    font-size:0; /* ⬅️ kunci penghilang titik biru */
 }
-
 .social-container p{
     font-size:14px;
     color:#bbb;
@@ -145,7 +143,6 @@ button:hover{
     background:rgba(255,255,255,0.03);
     object-fit:contain;
     opacity:.85;
-    font-size:16px; /* kembalikan ukuran font */
     transition:
         transform .35s ease,
         opacity .35s ease,
@@ -168,10 +165,10 @@ button:hover{
         0 0 25px rgba(37,211,102,.6);
 }
 
-/* Watermark terkunci */
+/* ===== WATERMARK (FIX SAFE-AREA MOBILE) ===== */
 .copyright{
     position:fixed;
-    bottom:8px;
+    bottom:calc(12px + env(safe-area-inset-bottom));
     left:50%;
     transform:translateX(-50%);
     font-size:11px;
@@ -180,6 +177,8 @@ button:hover{
     pointer-events:none;
     user-select:none;
     z-index:999;
+    text-align:center;
+    white-space:nowrap;
 }
 
 /* Responsive */
@@ -194,14 +193,13 @@ button:hover{
 <div class="container">
     <h2>Hisab Jumali</h2>
 
-    <input id="inputText" type="text" placeholder="اكتب ههنا" aria-label="Input teks Arab">
+    <input id="inputText" type="text" placeholder="Ketik disini" aria-label="Input teks Arab">
 
     <button onclick="calculate()">Hitung</button>
 
     <div class="result" id="result"></div>
     <div class="explanation" id="explanation"></div>
 
-    
     <div class="social-container">
         <p>Info lebih lanjut:</p>
 
@@ -245,7 +243,7 @@ function animateNumber(el,target){
             n=target;
             clearInterval(timer);
         }
-        el.textContent=`الحاصل: ${Math.floor(n)}`;
+        el.textContent=`النتيجة: ${Math.floor(n)}`;
     },16);
 }
 
@@ -259,7 +257,7 @@ function calculate(){
             sum+=abjadValues[c];
             const cell=document.createElement("div");
             cell.className="cell";
-            cell.style.animationDelay=`${i * 200}ms`; // ⬅️ animasi halus
+            cell.style.animationDelay=`${i * 200}ms`;
             cell.innerHTML=`<span>${c}</span><small>${abjadValues[c]}</small>`;
             explanation.appendChild(cell);
         }
