@@ -4,44 +4,52 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hisab Jumali</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
-
 <style>
-*{box-sizing:border-box}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+*::selection{background:transparent}
 
 body{
     font-family:'Amiri',serif;
     min-height:100vh;
+    margin:0;
+    padding:16px;
     display:flex;
     justify-content:center;
     align-items:center;
     background:radial-gradient(circle at top,#1f2933,#0b0f14 70%);
-    margin:0;
-    padding:16px;
     color:#fff;
 }
 
-/* Container utama */
-.container{
+.wrapper{
     width:100%;
     max-width:420px;
+}
+
+.container{
     padding:28px 26px;
     text-align:center;
     border-radius:20px;
     background:rgba(30,30,30,.75);
-    backdrop-filter:blur(12px);
-    box-shadow:0 20px 40px rgba(0,0,0,.45);
+    backdrop-filter:blur(14px);
+    box-shadow:0 20px 50px rgba(0,0,0,.5);
+    transform:scale(.95);
+    opacity:0;
+    transition:transform .6s cubic-bezier(.22,.61,.36,1),opacity .6s ease;
 }
 
-/* Judul */
+.container.show{
+    transform:scale(1);
+    opacity:1;
+}
+
 h2{
     margin:0 0 22px;
     font-size:28px;
     color:#00e676;
+    text-shadow:0 0 6px rgba(0,230,118,.7);
 }
 
-/* Input */
 input{
     width:100%;
     padding:15px;
@@ -53,37 +61,74 @@ input{
     color:#fff;
     direction:rtl;
     text-align:right;
+    transition:
+        opacity .45s ease,
+        transform .45s ease,
+        filter .45s ease,
+        box-shadow .45s ease;
 }
 input::placeholder{color:#aaa}
 
-/* Tombol */
-button{
+input.clearing{
+    opacity:0;
+    transform:scale(.92) translateY(8px);
+    filter:blur(5px);
+    box-shadow:0 0 12px rgba(0,230,118,.3) inset;
+}
+
+.button-group{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
     margin-top:18px;
-    width:100%;
+}
+
+button{
     padding:14px;
-    font-size:18px;
+    font-size:17px;
     font-weight:bold;
     border:none;
     border-radius:14px;
     cursor:pointer;
-    background:linear-gradient(135deg,#00e676,#00c853);
-    color:#000;
     transition:.25s ease;
 }
-button:hover{
-    transform:translateY(-2px);
-    box-shadow:0 0 18px rgba(0,230,118,.6);
+
+.btn-calc{
+    background:linear-gradient(135deg,#00e676,#00c853);
+    color:#000;
+}
+.btn-calc:hover{
+    transform:translateY(-2px) scale(1.03);
+    box-shadow:0 0 22px rgba(0,230,118,.6);
 }
 
-/* Result */
+.btn-clear{
+    background:#2f2f2f;
+    color:#fff;
+}
+.btn-clear:hover{
+    background:#3a3a3a;
+    box-shadow:0 0 12px rgba(0,255,118,.25);
+}
+
 .result{
     margin-top:22px;
     font-size:22px;
     font-weight:bold;
     color:#00e676;
+    text-shadow:0 0 6px rgba(0,230,118,.5);
+    transition:
+        opacity .5s ease,
+        transform .5s ease,
+        filter .5s ease;
 }
 
-/* Grid hasil */
+.result.clearing{
+    opacity:0;
+    transform:translateY(14px) scale(.92);
+    filter:blur(3px);
+}
+
 .explanation{
     margin-top:18px;
     display:grid;
@@ -92,96 +137,48 @@ button:hover{
     direction:rtl;
 }
 
-/* Cell animasi */
 .cell{
     background:#1f1f1f;
     border-radius:12px;
     padding:10px 6px;
     text-align:center;
     opacity:0;
-    transform:translateY(10px) scale(.95);
+    transform:translateY(16px) scale(.9);
+    box-shadow:0 0 4px rgba(0,255,118,.2);
     animation:cellIn .7s cubic-bezier(.22,.61,.36,1) forwards;
-    box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);
 }
 .cell span{
     display:block;
     font-size:20px;
     color:#00e676;
+    text-shadow:0 0 4px rgba(0,230,118,.6);
 }
 .cell small{
     font-size:14px;
     color:#ccc;
 }
 
+.cell.clearing{
+    animation:cellOut .5s cubic-bezier(.4,0,.2,1) forwards;
+}
+
 @keyframes cellIn{
     to{
         opacity:1;
         transform:translateY(0) scale(1);
-        box-shadow:
-            inset 0 0 0 1px rgba(255,255,255,.05),
-            0 0 12px rgba(0,230,118,.35);
+        box-shadow:0 0 10px rgba(0,230,118,.25);
     }
 }
 
-/* ===== SOCIAL LINK (TIDAK DIUBAH) ===== */
-.social-container{
-    margin-top:22px;
-    text-align:center;
-}
-.social-container p{
-    font-size:14px;
-    color:#bbb;
-    margin-bottom:10px;
+@keyframes cellOut{
+    to{
+        opacity:0;
+        transform:translateY(20px) scale(.88);
+        filter:blur(4px);
+        box-shadow:0 0 0 rgba(0,230,118,0);
+    }
 }
 
-.social-icon{
-    width:52px;
-    height:52px;
-    padding:6px;
-    margin:0 12px;
-    border-radius:14px;
-    background:rgba(255,255,255,0.03);
-    object-fit:contain;
-    opacity:.85;
-    transition:
-        transform .35s ease,
-        opacity .35s ease,
-        box-shadow .35s ease,
-        filter .35s ease;
-}
-.social-icon:hover{
-    transform:scale(1.18) translateY(-4px);
-    opacity:1;
-    filter:brightness(1.15);
-}
-.social-icon.ig:hover{
-    box-shadow:
-        0 0 12px rgba(225,48,108,.8),
-        0 0 25px rgba(253,29,29,.6);
-}
-.social-icon.wa:hover{
-    box-shadow:
-        0 0 12px rgba(37,211,102,.8),
-        0 0 25px rgba(37,211,102,.6);
-}
-
-/* ===== WATERMARK (FIX SAFE-AREA MOBILE) ===== */
-.copyright{
-    position:fixed;
-    bottom:calc(12px + env(safe-area-inset-bottom));
-    left:50%;
-    transform:translateX(-50%);
-    font-size:11px;
-    letter-spacing:.6px;
-    color:rgba(255,255,255,.35);
-    pointer-events:none;
-    user-select:none;
-    z-index:999;
-    text-align:center;
-    white-space:nowrap;
-}
-
-/* Responsive */
 @media(max-width:360px){
     .explanation{grid-template-columns:repeat(4,1fr)}
 }
@@ -190,36 +187,21 @@ button:hover{
 
 <body>
 
-<div class="container">
-    <h2>Hisab Jumali</h2>
+<div class="wrapper">
+<div class="container" id="calculator">
+<h2>Hisab Jumali</h2>
 
-    <input id="inputText" type="text" placeholder="Ketik disini" aria-label="Input teks Arab">
+<input id="inputText" type="text" placeholder="Ketik disini">
 
-    <button onclick="calculate()">Hitung</button>
-
-    <div class="result" id="result"></div>
-    <div class="explanation" id="explanation"></div>
-
-    <div class="social-container">
-        <p>Info lebih lanjut:</p>
-
-        <a href="https://www.instagram.com/umarhamdan_a/" target="_blank" rel="noopener noreferrer">
-            <img src="https://res.cloudinary.com/dmecuyazc/image/upload/v1766738130/ig_nhlx8u.png"
-                 alt="Instagram AFHIMNA"
-                 class="social-icon ig">
-        </a>
-
-        <a href="https://wa.me/62859106771139" target="_blank" rel="noopener noreferrer">
-            <img src="https://res.cloudinary.com/dmecuyazc/image/upload/v1766738128/wa_qpuube.png"
-                 alt="WhatsApp AFHIMNA"
-                 class="social-icon wa">
-        </a>
-    </div>
+<div class="button-group">
+<button class="btn-calc" onclick="calculate()">Hitung</button>
+<button class="btn-clear" onclick="clearAll()">Hapus</button>
 </div>
 
-<p class="copyright">
-© 2025 Afhimna Dev. All Rights Reserved.
-</p>
+<div class="result" id="result"></div>
+<div class="explanation" id="explanation"></div>
+</div>
+</div>
 
 <script>
 const abjadValues={
@@ -230,47 +212,68 @@ const abjadValues={
  'ض':800,'ظ':900,'غ':1000
 };
 
-function normalizeArabic(text){
-    return text.replace(/[\u064B-\u065F]/g,'');
-}
+function normalizeArabic(t){return t.replace(/[\u064B-\u065F]/g,'')}
 
 function animateNumber(el,target){
+    let duration=1000;
+    let stepTime=16;
+    let steps=Math.ceil(duration/stepTime);
     let n=0;
-    const step=Math.max(1,target/40);
+    const stepValue=target/steps;
     const timer=setInterval(()=>{
-        n+=step;
-        if(n>=target){
-            n=target;
-            clearInterval(timer);
-        }
+        n+=stepValue;
+        if(n>=target){n=target;clearInterval(timer)}
         el.textContent=`النتيجة: ${Math.floor(n)}`;
-    },16);
+    },stepTime);
 }
 
 function calculate(){
     let input=normalizeArabic(inputText.value.trim());
     let sum=0;
     explanation.innerHTML="";
+    result.textContent="";
 
     [...input].forEach((c,i)=>{
         if(abjadValues[c]){
             sum+=abjadValues[c];
             const cell=document.createElement("div");
             cell.className="cell";
-            cell.style.animationDelay=`${i * 200}ms`;
+            cell.style.animationDelay=`${i*120}ms`;
             cell.innerHTML=`<span>${c}</span><small>${abjadValues[c]}</small>`;
             explanation.appendChild(cell);
         }
     });
 
-    sum>0
-        ? animateNumber(result,sum)
-        : result.textContent="❌ tidak ada hasil";
+    sum>0 ? animateNumber(result,sum) : result.textContent="❌ tidak ada hasil";
+}
+
+function clearAll(){
+    inputText.classList.add("clearing");
+    result.classList.add("clearing");
+    [...document.querySelectorAll(".cell")].forEach((c,i)=>{
+        c.style.animationDelay=`${i*80}ms`;
+        c.classList.add("clearing");
+    });
+
+    const container = document.getElementById('calculator');
+    container.classList.remove('show');
+
+    setTimeout(()=>{
+        inputText.value="";
+        result.textContent="";
+        explanation.innerHTML="";
+        inputText.classList.remove("clearing");
+        result.classList.remove("clearing");
+        container.classList.add('show');
+        inputText.focus();
+    },700);
 }
 
 inputText.addEventListener("keydown",e=>{
     if(e.key==="Enter") calculate();
 });
+
+window.addEventListener('load',()=>{document.getElementById('calculator').classList.add('show');});
 </script>
 
 </body>
